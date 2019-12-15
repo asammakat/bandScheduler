@@ -1,5 +1,7 @@
 import datetime
 import csv
+
+##THIS IS A TEST
 #################################################################################
 
 class Band:
@@ -210,7 +212,6 @@ def main():
 
     #Display band for user
     print_band_members(band)
-    
 
     print("\nWho are you? (choose a number)")
     
@@ -218,7 +219,6 @@ def main():
     
     ####TODO use date time objects to remove dates from the list that 
     #have already passed####
-    
     #loads each band member with their current availability
     load_availability(band_member_list) 
     
