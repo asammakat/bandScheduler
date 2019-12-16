@@ -187,13 +187,11 @@ def load_availability(band_member_list):
                 availability.append(row)
             line_count = line_count + 1
 
-    availability = deal_with_zeros(availability)
-
-##        #deal with 0, convert to 00
-##        for date in range(len(availability)):
-##            for item in range(len(availability[date])):
-##                if availability[date][item] == '0':
-##                    availability[date][item] = "00"
+        #deal with 0, convert to 00
+        for date in range(len(availability)):
+            for item in range(len(availability[date])):
+                if availability[date][item] == '0':
+                    availability[date][item] = "00"
 
     #add availability to player objects
     for player in band_member_list:
@@ -229,16 +227,6 @@ def display_band_availability(band):
         print(member.get_name(), "-"*40)
         for date in member.get_availability():
             print("\t", format_date_text(date))
-
-def deal_with_zeros(dates):
-    #deal with 0, convert to 00
-    for date in range(len(dates)):
-        for item in range(len(dates[date])):
-            if dates[date][item] == '0':
-                print("HIT!")
-                dates[date][item] = "00"
-    print(dates)
-    return dates
 
             
 #################################################################################
@@ -341,7 +329,7 @@ def main():
 
     #load group availability
     group_availability = [band.find_dates_in_common()]
-    group_availability = deal_with_zeros(group_availability)
+
     
     #display availability
     print("\n")
