@@ -9,7 +9,8 @@ from BSFunctions import (
     display_availability,
     display_band_availability,
     delete_availability,
-    add_availability
+    add_availability,
+    deal_with_zeros
     )
 
 def main():

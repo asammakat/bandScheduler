@@ -35,11 +35,7 @@ def load_availability(band_member_list):
                 availability.append(row)
             line_count = line_count + 1
 
-        #deal with 0, convert to 00
-        for date in range(len(availability)):
-            for item in range(len(availability[date])):
-                if availability[date][item] == '0':
-                    availability[date][item] = "00"
+    availability = deal_with_zeros(availability)
 
     #add availability to player objects
     for player in band_member_list:
@@ -75,6 +71,14 @@ def display_band_availability(band):
         print(member.get_name(), "-"*40)
         for date in member.get_availability():
             print("\t", format_date_text(date))
+
+def deal_with_zeros(dates):
+    #deal with 0, convert to 00
+    for date in range(len(dates)):
+        for item in range(len(dates[date])):
+            if dates[date][item] == '0':
+                dates[date][item] = "00"
+    return dates
 
             
 #################################################################################

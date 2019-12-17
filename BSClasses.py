@@ -8,7 +8,8 @@ from BSFunctions import (
     display_availability,
     display_band_availability,
     delete_availability,
-    add_availability
+    add_availability,
+    deal_with_zeros
     )
 
 class Band:
@@ -112,7 +113,9 @@ class Band:
                                         str(start_time.hour), str(start_time.minute),
                                         str(end_time.hour), str(end_time.minute)])
 
-        return dates_in_common #[[st1,et1],[st2,et2], ... ]
+        dates_in_common = deal_with_zeros(dates_in_common)
+
+        return dates_in_common #[[st1,et1],[st2,et2], ...
             
                 
 #################################################################################
