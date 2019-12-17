@@ -101,7 +101,7 @@ class Band:
                         end_time = member_end_time                           
                         change_made = True
 
-                #if no change made we know the date in incompatable
+                #if no change made we know the date is incompatable
                 if change_made == False:  
                     green_light = False
                     break #Current date is incompatable so move on to the next

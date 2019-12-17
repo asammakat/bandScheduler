@@ -3,7 +3,7 @@ import csv
 
 def print_band_members(band_list):
     for j in range(len(band_list)):
-        print(j + 1, ": ", band_list[j], sep='')
+        print(j + 1, ": ", band_list[j])
 
 def display_availability(band_member, availability):
     print("Your current availability is: \n")
