@@ -1,10 +1,16 @@
 import csv
 import datetime
 from BSClasses import Player, Band
-from BSFunctions import (remove_old_dates,
-update_csv, load_availability, print_band_members, format_date_text,
-display_availability, display_band_availability, delete_availability,
-add_availability)
+from BSFunctions import (
+    update_csv,
+    load_availability,
+    print_band_members,
+    format_date_text,
+    display_availability,
+    display_band_availability,
+    delete_availability,
+    add_availability
+    )
 
 def main():
     band_member_list = [] #List of Player oblects

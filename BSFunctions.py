@@ -1,21 +1,6 @@
 import csv
 import datetime
-
-def remove_old_dates(band):
-    #in csv: name, year, month, day, startHour, startMinute, endHour, endMinute
-    #for datetime: year, month, day[,hour,minute,second,mocrosecond,tzinfo]
-    for member in band.get_roster():
-        for date in enumerate(member.get_availability()):
-            member_date = date[1]
-            endtime = datetime.datetime(int(member_date[1]),
-                                        int(member_date[2]),
-                                        int(member_date[3]),
-                                        int(member_date[6]),
-                                        int(member_date[7]))
-            if endtime < datetime.datetime.now():
-                #delete_availability uses index so use date[0]
-                member.delete_availability(date[0])
-#################################################################################    
+  
             
 def update_csv(band_member_list):
     

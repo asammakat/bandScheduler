@@ -1,5 +1,15 @@
 import csv
 import datetime
+from BSFunctions import (
+    update_csv,
+    load_availability,
+    print_band_members,
+    format_date_text,
+    display_availability,
+    display_band_availability,
+    delete_availability,
+    add_availability
+    )
 
 class Band:
     def __init__(self, roster):
@@ -134,4 +144,3 @@ class Player:
     def enumerate_availability(self):
         for i in range(len(self.availability)):
             print(i+1, ": ", format_date_text(self.availability[i]), sep = "")
-#################################################################################
