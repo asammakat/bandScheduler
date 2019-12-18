@@ -15,8 +15,8 @@ def update_csv(band_member_list):
     with open("KTLschedule.txt", mode='w') as schedule:
         schedule_writer = csv.writer(schedule, delimiter=',')
         schedule_writer.writerow(["name", "year", "month", "day",
-                          "startHour", "startMinute","stpm", "endHour",
-                          "endMinute", "etpm"])
+                          "startHour", "startMinute", "endHour",
+                          "endMinute"])
         for date in availability:
             schedule_writer.writerow(date)
 ####################################################################################
@@ -55,8 +55,8 @@ def format_date_text(date):
     #return "mm/dd/yy from <start time> to <endtime>"
     #name, year, month, day, startHour, startMinute, stpm, endHour, endMinute, etpm
     
-    start_time = rev_am_pm_conversion(date[4],date[5],date[6])
-    end_time = rev_am_pm_conversion(date[7],date[8],date[9])
+    start_time = rev_am_pm_conversion(date[4],date[5])
+    end_time = rev_am_pm_conversion(date[6],date[7])
     
     formatted_string = "{}/{}/{} from {} to {}".format(date[2],date[3],date[1],
                                                        start_time,end_time)
@@ -92,22 +92,22 @@ def am_pm_conversion(time):
         #only make adjustment from 1:00 pm - 11:59pm
         if time[0] != "12":           
             time[0] = str(int(time[0]) + 12) 
-        time.append(True) #pm is true
+        #time.append(True) #pm is true
             
     else:
         time[1] = time[1][:-1]
         #make adjustment from 12:00am - 12:59am
         if time[0] == "12":
             time[0] = "00"
-        time.append(False) #pm is false   
+        #time.append(False) #pm is false   
     return time
 #--------------------------------------------------------------------------------
 
-def rev_am_pm_conversion(hour, minute, pm):
-    #take a start or end time with am/pm informaton (pm == True if time is pm)
+def rev_am_pm_conversion(hour, minute):
+    #take a start or end time with am/pm informaton 
     #and conver to formatted string in "hh:mm am/pm" format.
 
-    if pm == "True" or pm == True:
+    if int(hour) >= 12:
         if hour != "12":
             result = "{}:{}pm".format(str(int(hour) - 12), minute)
         else:

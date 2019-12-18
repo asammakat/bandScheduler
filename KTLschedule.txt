@@ -1,7 +1,4 @@
-name,year,month,day,startHour,startMinute,stpm,endHour,endMinute,etpm
-adam,2020,4,19,16,00,True,19,00,True
-adam,2020,4,20,5,00,False,19,00,True
-zach,2020,4,19,12,00,True,16,00,True
-zach,2020,4,20,12,00,True,16,00,True
-tim,2020,4,19,00,30,False,16,00,True
-tim,2020,4,20,12,00,True,16,00,True
+name,year,month,day,startHour,startMinute,endHour,endMinute
+adam,2020,4,19,12,00,16,00
+zach,2020,4,19,11,00,15,00
+tim,2020,4,19,13,00,17,00

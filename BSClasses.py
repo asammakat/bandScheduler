@@ -38,8 +38,8 @@ class Band:
                 endtime = datetime.datetime(int(member_date[1]),
                                             int(member_date[2]),
                                             int(member_date[3]),
-                                            int(member_date[7]),
-                                            int(member_date[8]))
+                                            int(member_date[6]),
+                                            int(member_date[7]))
                 if endtime < datetime.datetime.now():
                     #delete_availability uses index so use date[0]
                     member.delete_availability(date[0])
@@ -66,8 +66,8 @@ class Band:
             #according to availability of other members
             end_time = datetime.datetime(
                 int(date[1]),int(date[2]),
-                int(date[3]),int(date[7]),
-                int(date[8])
+                int(date[3]),int(date[6]),
+                int(date[7])
                 )
                      
             for member in self.roster[1:]: #go through the rest of band.roster
@@ -86,8 +86,8 @@ class Band:
                     #end time for member as dt obj
                     member_end_time = datetime.datetime(
                         int(member_date[1]),int(member_date[2]),
-                        int(member_date[3]),int(member_date[7]),
-                        int(member_date[8])
+                        int(member_date[3]),int(member_date[6]),
+                        int(member_date[7])
                         )
 
                     # If member start time is in the desired window
@@ -120,9 +120,7 @@ class Band:
                 dates_in_common.append(["Everybody", str(start_time.year),
                                         str(start_time.month), str(start_time.day),
                                         str(start_time.hour), str(start_time.minute),
-                                        st_pm,
-                                        str(end_time.hour), str(end_time.minute),
-                                        et_pm])
+                                        str(end_time.hour), str(end_time.minute),])
 
         dates_in_common = deal_with_zeros(dates_in_common)
 
