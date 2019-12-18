@@ -44,12 +44,11 @@ def main():
     band.remove_old_dates()
 
     #load group availability
-    group_availability = [band.find_dates_in_common()]
-
+    group_availability = [band.find_dates_in_common()]#TODOseems odd dbl check
     
     #display availability
     print("\n")
-    print("Your availability is: \n" )
+    print("\nCurrent band availability is: \n" )
     display_band_availability(band)
     print("\n")#newline after displaying band_availability
 

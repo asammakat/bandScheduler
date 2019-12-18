@@ -1,7 +1,6 @@
 import csv
 import datetime
-  
-            
+             
 def update_csv(band_member_list):
     
     #store all dates for all band members
@@ -16,8 +15,8 @@ def update_csv(band_member_list):
     with open("KTLschedule.txt", mode='w') as schedule:
         schedule_writer = csv.writer(schedule, delimiter=',')
         schedule_writer.writerow(["name", "year", "month", "day",
-                          "startHour", "startMinute", "endHour",
-                          "endMinute"])
+                          "startHour", "startMinute","stpm", "endHour",
+                          "endMinute", "etpm"])
         for date in availability:
             schedule_writer.writerow(date)
 ####################################################################################
@@ -36,6 +35,7 @@ def load_availability(band_member_list):
             line_count = line_count + 1
 
     availability = deal_with_zeros(availability)
+    print("availability is: ", availability, len(availability))
 
     #add availability to player objects
     for player in band_member_list:
@@ -46,17 +46,20 @@ def load_availability(band_member_list):
 #################################################################################
 ###################### Text and display helper functions ########################
            
-def print_band_members(band):
+def print_band_members(band):#TODO Make band member function?
     for member in enumerate(band.get_roster()):
         print(member[0]+1, ": ", member[1].get_name(), sep = "")
 #--------------------------------------------------------------------------------
             
 def format_date_text(date):
     #return "mm/dd/yy from <start time> to <endtime>"
-    formatted_string = "{}/{}/{} from {}:{} to {}:{}".format(date[2],date[3],
-                                                              date[1],date[4],
-                                                              date[5], date[6],
-                                                              date[7])
+    #name, year, month, day, startHour, startMinute, stpm, endHour, endMinute, etpm
+    
+    start_time = rev_am_pm_conversion(date[4],date[5],date[6])
+    end_time = rev_am_pm_conversion(date[7],date[8],date[9])
+    
+    formatted_string = "{}/{}/{} from {} to {}".format(date[2],date[3],date[1],
+                                                       start_time,end_time)
     return formatted_string
 #--------------------------------------------------------------------------------
 
@@ -66,11 +69,12 @@ def display_availability(dates):
     print("\n")
 #--------------------------------------------------------------------------------
 
-def display_band_availability(band):
+def display_band_availability(band):#TODO Make band member funcion?
     for member in band.get_roster():
         print(member.get_name(), "-"*40)
         for date in member.get_availability():
             print("\t", format_date_text(date))
+#--------------------------------------------------------------------------------
 
 def deal_with_zeros(dates):
     #deal with 0, convert to 00
@@ -79,8 +83,44 @@ def deal_with_zeros(dates):
             if dates[date][item] == '0':
                 dates[date][item] = "00"
     return dates
+#--------------------------------------------------------------------------------
 
+def am_pm_conversion(time):
+    #time is [hh:mmp] or [hh:mma]
+    if time[1][-1] == "p":
+        time[1] = time[1][:-1] #get rid of a/p char
+        #only make adjustment from 1:00 pm - 11:59pm
+        if time[0] != "12":           
+            time[0] = str(int(time[0]) + 12) 
+        time.append(True) #pm is true
             
+    else:
+        time[1] = time[1][:-1]
+        #make adjustment from 12:00am - 12:59am
+        if time[0] == "12":
+            time[0] = "00"
+        time.append(False) #pm is false   
+    return time
+#--------------------------------------------------------------------------------
+
+def rev_am_pm_conversion(hour, minute, pm):
+    #take a start or end time with am/pm informaton (pm == True if time is pm)
+    #and conver to formatted string in "hh:mm am/pm" format.
+
+    if pm == "True" or pm == True:
+        if hour != "12":
+            result = "{}:{}pm".format(str(int(hour) - 12), minute)
+        else:
+            result = "{}:{}pm".format(hour, minute)
+
+    else:
+        if hour == "00":
+            result = "{}:{}am".format(str(int(hour) + 12), minute)
+        else:
+            result =  "{}:{}am".format(hour, minute)
+
+    return result
+                   
 #################################################################################
 
 #Menu option 2
@@ -99,7 +139,7 @@ def delete_availability(band_member):
 
 #Menu option 1
 def add_availability(band_member):
-    #name, year, month, day, startHour, startMinute, endHour, endMinute
+    #name, year, month, day, startHour, startMinute, stpm, endHour, endMinute, etpm
     while(True):
         new_entry = []
         new_entry.append(band_member.get_name().lower())
@@ -114,27 +154,28 @@ def add_availability(band_member):
         
         #get start time
         print("What time does your availability start? (hh:mm)", end = " ")
-        print("followed by 'a' for am or 'p' for pm") #TODO impliment 'a' or 'p feature'
+        print("followed by 'a' for am or 'p' for pm") 
         start_time = input()
         start_time = start_time.split(":")
-        new_entry.append(start_time[0])
-        new_entry.append(start_time[1])
+        start_time = am_pm_conversion(start_time)
+            
+        for i in start_time:
+            new_entry.append(i)
         
         #get end time
         print("What time does your availability end: (hh:mm)")
+        print("followed by 'a' for am or 'p' for pm") 
         end_time = input()
         end_time = end_time.split(":")
-        new_entry.append(end_time[0])
-        new_entry.append(end_time[1])
+        end_time = am_pm_conversion(end_time)
+            
+        for i in end_time:
+            new_entry.append(i)
         
         #TODO Error check user input
-        #TODO Impliment user inputing a or p for am / pm
-
-        print("You are available on %s/%s/%s from %s:%s to %s:%s\n"
-                                        %(new_entry[2], new_entry[3],
-                                         new_entry[1], new_entry[4],
-                                         new_entry[5], new_entry[6],
-                                         new_entry[7]))
+        
+        print("You are availabile on", format_date_text(new_entry))
+        
         #confirm date is correct
         print("Is this correct?")
         confirm = input()
