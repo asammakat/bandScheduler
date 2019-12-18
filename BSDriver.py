@@ -70,7 +70,10 @@ def main():
                "    Press 4 to see your availability\n"
                "    Press 5 to see availability in common\n"              
                "    Enter -1 to exit")
-        user_input = int(input())
+        try:
+            user_input = int(input())
+        except:
+            print("Input must be a number. Please try again.")
 
         if user_input == 1:
             availability = add_availability(band_member)

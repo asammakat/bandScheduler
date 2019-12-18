@@ -92,14 +92,12 @@ def am_pm_conversion(time):
         #only make adjustment from 1:00 pm - 11:59pm
         if time[0] != "12":           
             time[0] = str(int(time[0]) + 12) 
-        #time.append(True) #pm is true
             
     else:
         time[1] = time[1][:-1]
         #make adjustment from 12:00am - 12:59am
         if time[0] == "12":
-            time[0] = "00"
-        #time.append(False) #pm is false   
+            time[0] = "00"  
     return time
 #--------------------------------------------------------------------------------
 
@@ -120,6 +118,7 @@ def rev_am_pm_conversion(hour, minute):
             result =  "{}:{}am".format(hour, minute)
 
     return result
+    
                    
 #################################################################################
 
@@ -139,7 +138,7 @@ def delete_availability(band_member):
 
 #Menu option 1
 def add_availability(band_member):
-    #name, year, month, day, startHour, startMinute, stpm, endHour, endMinute, etpm
+    #name, year, month, day, startHour, startMinute, endHour, endMinute
     while(True):
         new_entry = []
         new_entry.append(band_member.get_name().lower())
@@ -148,35 +147,76 @@ def add_availability(band_member):
         print("On what day are you available? (mm/dd/yyyy)")
         date = input()
         date = date.split("/")
-        new_entry.append(date[2])
-        new_entry.append(date[0])
-        new_entry.append(date[1])
-        
-        #get start time
+        #Check that entry is valid format
+        try:
+            new_entry.append(date[2])
+            new_entry.append(date[0])
+            new_entry.append(date[1])
+        except:
+            print("Invalid entry for year please try again.")
+            continue
+            
+        #get start time from user
         print("What time does your availability start? (hh:mm)", end = " ")
         print("followed by 'a' for am or 'p' for pm") 
         start_time = input()
         start_time = start_time.split(":")
-        start_time = am_pm_conversion(start_time)
-            
+        #check that entry is valid format
+        try:
+            start_time = am_pm_conversion(start_time)
+        except:
+            print("Invalid entry for start time. Please try again")
+            continue
+
+        #append start time             
         for i in start_time:
             new_entry.append(i)
         
-        #get end time
+        #get end time from user
         print("What time does your availability end: (hh:mm)")
         print("followed by 'a' for am or 'p' for pm") 
         end_time = input()
         end_time = end_time.split(":")
-        end_time = am_pm_conversion(end_time)
-            
+        #check that entry is valid format
+        try:
+            end_time = am_pm_conversion(end_time)
+        except:
+            print("Invalid entry for end time. Please try again")
+            continue            
+
+        #append end time
         for i in end_time:
             new_entry.append(i)
         
-        #TODO Error check user input
-        
+        #Error check user input by testing that datetime objects can be made with them
+        try:
+            st_as_dt = datetime.datetime(
+                        int(new_entry[1]),int(new_entry[2]),
+                        int(new_entry[3]),int(new_entry[4]),
+                        int(new_entry[5])
+                        )
+                        
+            et_as_dt = datetime.datetime(
+                        int(new_entry[1]),int(new_entry[2]),
+                        int(new_entry[3]),int(new_entry[6]),
+                        int(new_entry[7])
+                        )
+        except:
+            print("Oops! There was an issue with your input. Please try again.")
+            continue
+
+        #make sure end time is after start time
+        if st_as_dt > et_as_dt:
+            print("Start time must be before end time. Please try again.")
+            continue
+
+        #make sure start time is in the future
+        if st_as_dt < datetime.datetime.now():
+            print("Start time must be in the future. Please try again" )
+            continue
+
+        #display selected date and confirm correct
         print("You are availabile on", format_date_text(new_entry))
-        
-        #confirm date is correct
         print("Is this correct?")
         confirm = input()
         if confirm == "y":
