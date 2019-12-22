@@ -1,14 +1,8 @@
 import csv
 import datetime
 from BSFunctions import (
-    update_csv,
-    load_availability,
-    print_band_members,
     format_date_text,
-    display_availability,
-    display_band_availability,
     delete_availability,
-    add_availability,
     deal_with_zeros
     )
 
@@ -70,11 +64,12 @@ class Band:
                 int(date[7])
                 )
                      
-            for member in self.roster[1:]: #go through the rest of band.roster
+            for member in self.roster[1:]:#go through the rest of band.roster
                 #flag to determine if a change has been made to start_time or end_time
-                change_made = False
+                compatable = False
                 #go through member's availability
                 for member_date in member.get_availability():
+                    
 
                     #start time for member as dt obj
                     member_start_time = datetime.datetime(
@@ -93,18 +88,22 @@ class Band:
                     # If member start time is in the desired window
                     #change start time outside of this loop
                     if (member_start_time >= start_time) and (member_start_time < end_time):
+                        
                         start_time = member_start_time
-                        change_made = True 
+                        compatable = True 
 
                     #If member end time is in the desired window
                     #change end time outside of this loop
                     if(member_end_time > start_time) and (member_end_time <= end_time):
                         end_time = member_end_time                           
-                        change_made = True
+                        compatable = True
+
+                    if(member_start_time < start_time and member_end_time > end_time):
+                        compatable = True
 
                 #if no change made we know the date is incompatable
-                if change_made == False:  
-                    green_light = False
+                if compatable == False:
+                    green_light = False 
                     break #Current date is incompatable so move on to the next
 
             if green_light == True: #current date is compatable
@@ -123,7 +122,7 @@ class Band:
                                         str(end_time.hour), str(end_time.minute),])
 
         dates_in_common = deal_with_zeros(dates_in_common)
-
+        
         return dates_in_common #[[st1,et1],[st2,et2], ...
             
                 

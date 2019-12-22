@@ -35,8 +35,7 @@ def load_availability(band_member_list):
             line_count = line_count + 1
 
     availability = deal_with_zeros(availability)
-    print("availability is: ", availability, len(availability))
-
+    
     #add availability to player objects
     for player in band_member_list:
         name = player.get_name().lower()
